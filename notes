@@ -1,0 +1,13 @@
+
+Boat:
+
+90 deg
+
+   +y
+ =====>      0 deg
+-x        +x
+   -y
+
+
+   y+: port
+   y-: starboard

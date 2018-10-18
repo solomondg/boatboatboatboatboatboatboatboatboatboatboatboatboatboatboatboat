@@ -1,0 +1,347 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<link rel=File-List href="about_files/filelist.xml">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+b\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>Panel Method Based 2-D Potential Flow Simulator</title>
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:"Times New Roman";
+	panose-1:2 2 6 3 5 4 5 2 3 4;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{text-indent:0pt;
+	margin-left:0pt;
+	margin-right:0pt;
+	margin-top:0pt;
+	margin-bottom:0pt;
+	text-align:left;
+	font-family:"Times New Roman";
+	font-size:10.0pt;
+	color:black;}
+ol
+	{margin-top:0in;
+	margin-bottom:0in;
+	margin-left:.25in;}
+ul
+	{margin-top:0in;
+	margin-bottom:0in;
+	margin-left:.25in;}
+@page
+	{size:8.5in 11.0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="4098" fill="f" fillcolor="white [7]"
+  strokecolor="black [0]">
+  <v:fill color="white [7]" color2="white [7]" on="f"/>
+  <v:stroke color="black [0]" color2="white [7]">
+   <o:left v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:top v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:right v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:bottom v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+  </v:stroke>
+  <v:shadow color="#ccc [4]"/>
+  <v:textbox inset="2.88pt,2.88pt,2.88pt,2.88pt"/>
+  <o:colormru v:ext="edit" colors="#f69"/>
+ </o:shapedefaults><o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body link="#0066FF" vlink="#6633CC" style='margin:0'>
+
+<div style='position:absolute;width:7.9319in;height:35.0152in'>
+<!--[if gte vml 1]><v:shapetype id="_x0000_t202" coordsize="21600,21600" o:spt="202"
+ path="m,l,21600r21600,l21600,xe">
+ <v:stroke joinstyle="miter"/>
+ <v:path gradientshapeok="t" o:connecttype="rect"/>
+</v:shapetype><v:shape id="_x0000_s1033" type="#_x0000_t202" style='position:absolute;
+ left:6pt;top:0;width:510pt;height:35in;z-index:3;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' filled="f" fillcolor="black" stroked="f"
+ strokecolor="black [0]" strokeweight="0">
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]" weight="0"/>
+ </v:stroke>
+ <v:shadow color="#ccc [4]"/>
+ <v:path insetpenok="f"/>
+ <v:textbox style='mso-column-margin:5.7pt;mso-rotate-with-shape:t' inset="2.85pt,2.85pt,2.85pt,2.85pt"/>
+</v:shape><![endif]--><![if !vml]><span style='position:absolute;z-index:3;
+left:8px;top:0px;width:680px;height:3360px'>
+
+<table cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=680 height=3360 style='vertical-align:top'><![endif]>
+  <div v:shape="_x0000_s1033" style='padding:2.85pt 2.85pt 2.85pt 2.85pt'
+  class=shape>
+  <p class=MsoNormal style='margin-bottom:14.0pt'><span style='font-size:9.0pt;
+  language:EN'><![if !supportEmptyParas]>&nbsp;<![endif]></span></p>
+  <p class=MsoNormal style='margin-bottom:14.0pt'><span style='font-size:9.0pt;
+  color:#990000;language:EN'>   </span></p>
+  <p class=MsoNormal style='text-align:center;margin-bottom:14.0pt;text-align:
+  center'><span style='font-size:9.0pt;color:#990000;language:EN'>J.Divahar (j.divahar@yahoo.com)</span></p>
+  <p class=MsoNormal style='margin-bottom:14.0pt'><span style='font-size:21.0pt;
+  color:#990000;language:EN'>About...</span></p>
+  <p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-size:11.0pt;
+  language:EN'>This Airfoil Analyzer tool is mainly intended to be useful in analyzing and comparing the airfoils’ geometrical features and in quick plotting of airfoils . Airfoil Analyzer will be useful in the following the ways, </span></p>
+  <p class=MsoNormal style='text-indent:-.75pt;margin-left:36.75pt;margin-bottom:
+  2.0pt'><span style='font-size:12.0pt;color:#FF6600;language:EN'>&#9658;</span><span
+  style='language:EN'>   Upto 3 airfoils can be ploted together in the plot area to compare the geometrical features and  the similarities among them can be analyzed and explored .</span></p>
+  <p class=MsoNormal style='text-indent:-.75pt;margin-left:36.75pt;margin-bottom:
+  2.0pt'><span style='font-size:12.0pt;color:#FF6600;language:EN'>&#9658;</span><span
+  style='language:EN'>   Leading edge radius, trailing edge cusp angle, camber line distribution, maximum camber &amp; its location, and maximum thickness &amp; its location, which are the important technical features of  airfoils, can be computed from the airfoil coordinate data files and plotted.</span></p>
+  <p class=MsoNormal style='text-indent:-.75pt;margin-left:36.75pt;margin-bottom:
+  2.0pt'><span style='font-size:12.0pt;color:#FF6600;language:EN'>&#9658;</span><span
+  style='language:EN'>   For panel method analysis and other methods, aifoils can be examined for mesh details.</span></p>
+  <p class=MsoNormal style='text-indent:-.75pt;margin-left:36.75pt;margin-bottom:
+  2.0pt'><span style='font-size:12.0pt;color:#FF6600;language:EN'>&#9658;</span><span
+  style='language:EN'>   Airfoils can be quickly plotted at just selection.</span></p>
+  <p class=MsoNormal style='text-indent:-.75pt;margin-left:36.75pt;margin-bottom:
+  2.0pt'><span style='font-size:11.0pt;language:EN'><![if !supportEmptyParas]>&nbsp;<![endif]></span></p>
+  <p class=MsoNormal style='text-indent:-.75pt;margin-left:36.75pt;margin-bottom:
+  2.0pt'><span style='font-size:11.0pt;language:EN'><![if !supportEmptyParas]>&nbsp;<![endif]></span></p>
+  <p class=MsoNormal style='margin-bottom:14.0pt'><span style='font-size:12.0pt;
+  color:#990000;font-weight:bold;language:EN'>Salient Features</span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='font-size:8.0pt;color:blue;language:EN'>&#9679;</span><span
+  style='language:EN'>   Total of 1550 Airfoils’ coordinate files are provided under classified folders with the Airfoil Analyzer.</span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='font-size:8.0pt;color:blue;language:EN'>&#9679;    </span><span
+  style='language:EN'>Line style, Marker style, Line width and color of the next plot can be set through the </span><span
+  style='font-weight:bold;language:EN'>“Properties Settings for Next    Plot” </span><span
+  style='language:EN'>tab. A small preview region is also provided.</span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='font-size:8.0pt;color:blue;language:EN'>&#9679;</span><span
+  style='color:blue;language:EN'> </span><span style='language:EN'>  Dynamically one can change the folder to be read, where the data files are residing just by clicking the </span><span
+  style='font-weight:bold;language:EN'>“Change Airfoil Data Folder”</span><span
+  style='language:EN'>  button.</span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='font-size:8.0pt;color:blue;language:EN'>&#9679;</span><span
+  style='language:EN'>   </span><span style='language:EN'>Well Customization is made possible through the controls in </span><span
+  style='font-weight:bold;language:EN'>“Properties Settings for Next Plot” </span><span
+  style='language:EN'>and </span><span style='font-weight:bold;language:EN'>“Current View Options”  </span><span
+  style='language:EN'>tabs.</span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='font-size:8.0pt;color:blue;language:EN'>&#9679;    </span><span
+  style='language:EN'>Automatic focusing is done while viewing the leading edge circle and trailing edge cusp angle so that continuous and repeated zoom and pan operations are eliminated. </span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='font-size:8.0pt;color:blue;language:EN'>&#9679;    </span><span
+  style='language:EN'>In the title bar of the </span><span style='font-weight:
+  bold;language:EN'>Airfoil Analyzer</span><span style='language:EN'>’s  window, the no. of data files in the current folder is displayed.</span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='font-size:8.0pt;color:blue;language:EN'>&#9679;    </span><span
+  style='language:EN'>All of these are kept in an attractive and user friendly Graphical User Interface.</span></p>
+  <p class=MsoNormal style='margin-bottom:14.0pt'><span style='font-size:12.0pt;
+  color:#990000;font-weight:bold;language:EN'>Note: </span></p>
+  <p class=MsoNormal style='margin-left:14.25pt;margin-bottom:14.0pt'><span
+  style='language:EN'>Airfoil Analyzer was well utilized by the author for inspecting the coordinates and compare the results of the data files while developing the code for  </span><span
+  style='font-weight:bold;language:EN'>“Panel Method Based 2-D Potential Flow Simulator” </span></p>
+  <p class=MsoNormal style='margin-bottom:14.0pt'><span style='font-size:12.0pt;
+  color:#990000;font-weight:bold;language:EN'>Examples of Airfoil Analyzer's Plots</span></p>
+  </div>
+  <![if !vml]></td>
+ </tr>
+</table>
+
+</span><![endif]><!--[if gte vml 1]><v:group id="_x0000_s1036" style='position:absolute;
+ left:33pt;top:12pt;width:482.25pt;height:22.5pt;z-index:6' coordorigin="106651425,88392000"
+ coordsize="6286500,285750">
+ <v:rect id="_x0000_s1037" style='position:absolute;left:106651425;top:88392000;
+  width:6286500;height:285750;mso-wrap-distance-left:2.88pt;
+  mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+  mso-wrap-distance-bottom:2.88pt' fillcolor="#e7ebf7" stroked="f"
+  strokecolor="black [0]" strokeweight="0">
+  <v:fill color2="white [7]"/>
+  <v:stroke color2="white [7]">
+   <o:left v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:top v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:right v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:bottom v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+  </v:stroke>
+  <v:shadow color="#ccc [4]"/>
+  <v:path insetpenok="f"/>
+  <v:textbox inset="2.88pt,2.88pt,2.88pt,2.88pt"/>
+ </v:rect><v:shape id="_x0000_s1038" type="#_x0000_t202" style='position:absolute;
+  left:106651425;top:88401525;width:3943350;height:228600;
+  mso-wrap-distance-left:2.88pt;mso-wrap-distance-top:2.88pt;
+  mso-wrap-distance-right:2.88pt;mso-wrap-distance-bottom:2.88pt' filled="f"
+  fillcolor="black" stroked="f" strokecolor="black [0]" strokeweight="0">
+  <v:stroke color2="white [7]">
+   <o:left v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:top v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:right v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:bottom v:ext="view" color="black [0]" color2="white [7]"/>
+   <o:column v:ext="view" color="black [0]" color2="white [7]" weight="0"/>
+  </v:stroke>
+  <v:shadow color="#ccc [4]"/>
+  <v:path insetpenok="f"/>
+  <v:textbox style='mso-column-margin:5.7pt;mso-rotate-with-shape:t' inset="2.85pt,2.85pt,2.85pt,2.85pt">
+   <div dir=ltr>
+   <p class=MsoNormal style='margin-bottom:14.0pt'><span style='font-size:12.85pt;
+   font-weight:bold;language:EN'>Airfoil Analyzer</span></p>
+   </div>
+  </v:textbox>
+ </v:shape></v:group><![endif]--><![if !vml]><span style='position:absolute;
+z-index:6;left:44px;top:16px;width:643px;height:30px'><img width=643 height=30
+src="about_files/image316.gif" v:shapes="_x0000_s1036 _x0000_s1037 _x0000_s1038"></span><![endif]><!--[if gte vml 1]><v:rect
+ id="_x0000_s1039" style='position:absolute;left:27pt;top:945pt;width:450pt;
+ height:277.9pt;z-index:7;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' o:preferrelative="t" filled="f" fillcolor="white [7]"
+ strokecolor="black [0]" strokeweight="1.5pt" o:cliptowrap="t">
+ <v:fill color2="white [7]"/>
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+ </v:stroke>
+ <v:imagedata src="about_files/image320.png" o:title="2"/>
+ <v:shadow on="t" color="#ccc [4]" opacity=".5" offset="6pt,6pt"/>
+ <v:path o:extrusionok="f" insetpenok="f"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:rect><![endif]--><![if !vml]><span style='position:absolute;z-index:7;
+left:35px;top:1259px;width:610px;height:381px'><img width=610 height=381
+src="about_files/image3201.gif" v:shapes="_x0000_s1039"></span><![endif]><!--[if gte vml 1]><v:rect
+ id="_x0000_s1040" style='position:absolute;left:27pt;top:1566pt;width:450pt;
+ height:282.92pt;z-index:8;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' o:preferrelative="t" filled="f" fillcolor="white [7]"
+ strokecolor="black [0]" strokeweight="1.5pt" o:cliptowrap="t">
+ <v:fill color2="white [7]"/>
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+ </v:stroke>
+ <v:imagedata src="about_files/image318.png" o:title="4"/>
+ <v:shadow on="t" color="#ccc [4]" opacity=".5" offset="6pt,6pt"/>
+ <v:path o:extrusionok="f" insetpenok="f"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:rect><![endif]--><![if !vml]><span style='position:absolute;z-index:8;
+left:35px;top:2087px;width:610px;height:388px'><img width=610 height=388
+src="about_files/image3181.gif" v:shapes="_x0000_s1040"></span><![endif]><!--[if gte vml 1]><v:line
+ id="_x0000_s1041" style='position:absolute;z-index:9;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' from="6pt,39pt" to="516pt,39pt"
+ strokecolor="black [0]" o:cliptowrap="t">
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+ </v:stroke>
+ <v:shadow color="#ccc [4]"/>
+ <v:path insetpenok="f"/>
+</v:line><![endif]--><![if !vml]><span style='position:absolute;z-index:9;
+left:7px;top:51px;width:682px;height:2px'><img width=682 height=2
+src="about_files/image315.gif" v:shapes="_x0000_s1041"></span><![endif]><!--[if gte vml 1]><v:rect
+ id="_x0000_s1042" style='position:absolute;left:27.75pt;top:1254.75pt;width:450pt;
+ height:278.33pt;z-index:10;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' o:preferrelative="t" filled="f" fillcolor="white [7]"
+ strokecolor="black [0]" strokeweight="1.5pt" o:cliptowrap="t">
+ <v:fill color2="white [7]"/>
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+ </v:stroke>
+ <v:imagedata src="about_files/image327.png" o:title="3"/>
+ <v:shadow on="t" color="#ccc [4]" opacity=".5" offset="6pt,6pt"/>
+ <v:path o:extrusionok="f" insetpenok="f"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:rect><![endif]--><![if !vml]><span style='position:absolute;z-index:10;
+left:36px;top:1672px;width:610px;height:382px'><img width=610 height=382
+src="about_files/image3271.gif" v:shapes="_x0000_s1042"></span><![endif]><!--[if gte vml 1]><v:rect
+ id="_x0000_s1043" style='position:absolute;left:27pt;top:639pt;width:450pt;
+ height:274.36pt;z-index:11;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' o:preferrelative="t" filled="f" fillcolor="white [7]"
+ strokecolor="black [0]" strokeweight="1.5pt" o:cliptowrap="t">
+ <v:fill color2="white [7]"/>
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+ </v:stroke>
+ <v:imagedata src="about_files/image333.png" o:title="1"/>
+ <v:shadow on="t" color="#ccc [4]" opacity=".5" offset="6pt,6pt"/>
+ <v:path o:extrusionok="f" insetpenok="f"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:rect><![endif]--><![if !vml]><span style='position:absolute;z-index:11;
+left:35px;top:851px;width:610px;height:376px'><img width=610 height=376
+src="about_files/image3331.gif" v:shapes="_x0000_s1043"></span><![endif]><!--[if gte vml 1]><v:rect
+ id="_x0000_s1044" style='position:absolute;left:27pt;top:1881pt;width:450pt;
+ height:279.44pt;z-index:12;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' o:preferrelative="t" filled="f" fillcolor="white [7]"
+ strokecolor="black [0]" strokeweight="1.5pt" o:cliptowrap="t">
+ <v:fill color2="white [7]"/>
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+ </v:stroke>
+ <v:imagedata src="about_files/image329.png" o:title="5"/>
+ <v:shadow on="t" color="#ccc [4]" opacity=".5" offset="6pt,6pt"/>
+ <v:path o:extrusionok="f" insetpenok="f"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:rect><![endif]--><![if !vml]><span style='position:absolute;z-index:12;
+left:35px;top:2507px;width:610px;height:383px'><img width=610 height=383
+src="about_files/image3291.gif" v:shapes="_x0000_s1044"></span><![endif]><!--[if gte vml 1]><v:rect
+ id="_x0000_s1045" style='position:absolute;left:27pt;top:2193pt;width:450pt;
+ height:281.04pt;z-index:13;mso-wrap-distance-left:2.88pt;
+ mso-wrap-distance-top:2.88pt;mso-wrap-distance-right:2.88pt;
+ mso-wrap-distance-bottom:2.88pt' o:preferrelative="t" filled="f" fillcolor="white [7]"
+ strokecolor="black [0]" strokeweight="1.5pt" o:cliptowrap="t">
+ <v:fill color2="white [7]"/>
+ <v:stroke color2="white [7]">
+  <o:left v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:top v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:right v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:bottom v:ext="view" color="black [0]" color2="white [7]" joinstyle="miter"/>
+  <o:column v:ext="view" color="black [0]" color2="white [7]"/>
+ </v:stroke>
+ <v:imagedata src="about_files/image335.png" o:title="6"/>
+ <v:shadow on="t" color="#ccc [4]" opacity=".5" offset="6pt,6pt"/>
+ <v:path o:extrusionok="f" insetpenok="f"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:rect><![endif]--><![if !vml]><span style='position:absolute;z-index:13;
+left:35px;top:2923px;width:610px;height:385px'><img width=610 height=385
+src="about_files/image3351.gif" v:shapes="_x0000_s1045"></span><![endif]>
+</div>
+
+</body>
+
+</html>
