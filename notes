@@ -11,3 +11,41 @@ Boat:
 
    y+: port
    y-: starboard
+
+
+Plots generated in xfoil
+
+def genAlfa(start, stop, inc):
+    stop -= start
+    csv = "" 
+    for i in range(0, int(stop/inc)):
+            csv += "ALFA " + str(round(i*inc+start, 3)) + "\n" + "INIT" + "\n"
+    return csv
+
+LOAD dat/e1211-il.dat	Load the dat file
+MDES	Go to the MDES menu
+FILT	Smooth any variations in the dat file data
+EXEC	Execute the smoothing
+	Back to main menu
+PANE	Set the number and location of the airfoil points for analysis
+OPER	Go to the OPER menu
+ITER 70	Max number of iterations set to 70 for convergence
+RE 50000	Set Reynolds number (required?)
+VISC 50000	Set viscous calculation with Reynolds number
+PACC	Start polar output file
+polar/e1211-il_50000.txt	The output polar file name
+	No dump file
+ALFA 0	Calculate lift and drag at 0° angle of attack
+ALFA 0.25	... 0.25°
+ALFA 0.5	... 0.5° ...
+...	...more alpha calculations here ...
+ALFA 3.5	At 3.5° no convergence
+ALFA 3.5	... try again ...
+ALFA 3.5	... and again
+INIT	Run INIT to reinitialise
+ALFA 3.75	Skip to 3.75°
+...	...rest of alpha calculations here ...
+PACC	Close polar file
+VISC	Reinitialise viscous calculation (required?)
+	Down to main menu
+QUIT

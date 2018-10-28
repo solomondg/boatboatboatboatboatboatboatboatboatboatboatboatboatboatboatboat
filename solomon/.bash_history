@@ -1,15 +1,15 @@
+ls
 export HOME=/home/solomon
-/opt/tmw/matlab-custom-r2018a/
-ls
-cd bin
-matlab
-DISPLAY=:0 /opt/tmw/matlab-custom-r2018a/bin/matlab
+export DISPLAY=:0
 cd
-ls
-cd /home/solomon/code/oars/boatsim/
-ls
-DISPLAY=:0 /opt/tmw/matlab-custom-r2018a/bin/matlab
-bg
+cd code/oars/boatsim/
 ls
 ls
-screen
+matlab
+/opt/tmw/matlab-custom-r2018a/bin/matlab
+9
+/opt/tmw/matlab-custom-r2018a/bin/matlab
+halt -p
+sudo halt -
+sudo halt -p
+su
