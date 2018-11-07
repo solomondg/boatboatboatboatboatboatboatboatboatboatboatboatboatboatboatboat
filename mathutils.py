@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-from main import unit
+from units import unit
 
 kEpsilon = 1e-8
 
@@ -212,7 +212,6 @@ def drag(C, u, A, Rho):
 
 def airDrag(C, u, A):
     return drag(C, u, A, 1.225 * unit.kg / (unit.meter ** 3))
-
 
 def waterDrag(C, u, A):
     return drag(C, u, A, 997 * unit.kg / (unit.meter ** 3))

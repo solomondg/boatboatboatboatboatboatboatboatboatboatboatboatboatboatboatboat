@@ -30,7 +30,7 @@ mainSail = SimpleNamespace(
     width=1 * unit.foot,
     height=5 * unit.foot,
     CoD=1.25,
-    relativeHeading=Rotation2d(1.0, 0.0),
+    relativeHeading=Rotation2d(0.0, 1.0),
     angularVelocity=0.0 * unit.radian / unit.second,
     MOI=0.18 * unit.kg * (unit.meter ** 2),
     CoF=1E-2
@@ -109,6 +109,17 @@ for i in np.linspace(0, simTime, int(simTime * 1 / dt)):  # 60 seconds at dt=0.0
                                                                              .rotateBy(boat.heading)
                                                                              .normal)
 
+    mainSailAoa = math.fabs(wind.angle.degrees - mainSail.relativeHeading.rotateBy(boat.heading).degrees)
+    print(mainSailAoa)
+
+    break
+
+
+
+
+
+
+
     mainForce = airDrag(mainSail.CoD, wind.speed, mainSailPresentedArea).to(unit.lbf)
     ancillaryForce = airDrag(ancillarySail.CoD, wind.speed, ancillarySailPresentedArea).to(unit.lbf)
 
@@ -138,6 +149,8 @@ for i in np.linspace(0, simTime, int(simTime * 1 / dt)):  # 60 seconds at dt=0.0
     ancillarySail.relativeHeading = Rotation2d.fromDegrees(
         min(45, max(error * .9 + (mainSail.angularVelocity * unit.dt).m * 5.3, -45))
     )
+
+    break
 
 with open('plot.csv', 'w') as f:
     f.write(csv)

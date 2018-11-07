@@ -11,8 +11,30 @@ from pint import UnitRegistry
 from sklearn.preprocessing import normalize
 from collections import namedtuple
 
-from main import unit
+from aoa_lookup import getCl, getCd
+from units import unit
 from mathutils import Rotation2d, Vector2d, airDrag
+
+
+# CCW coordinate system
+#         -y
+#     /----------|
+# +x <   ==== == |
+#     \----------|
+#         ^ main sail
+#             ^ ancillary sail
+
+# Mainsail relativeHeading is relative to boar
+# [1 0] is pointing forwards
+# [0 1] is pointing right
+#
+
+# Ancillary sail relative heading is relative to main sail
+# (main,ancillary)
+# [1 0], [1 0] is both main and ancillary pointing forwards
+# [0.707 0.707] [1 0] is both main and ancillary in line but pointing 45 degrees to port (aka ancillary hanging over starboard side)
+# [0.707 0.707] [0.707 -0.707] is main at 45 degrees to port but ancillary parallel with boat
+#
 
 
 # TODO: Make actual lift calculations instead of doing 100% angle of attack
@@ -26,10 +48,9 @@ class Sail:
         frontCoD=0.6,
         relativeHeading=Rotation2d(1.0, 0.0),
         angularVelocity=0.0 * unit.radian / unit.second,
-        MOI=0.18 * unit.kg * (unit.meter ** 2),
-        CoF=1E-2
+        MOI=0.50 * unit.kg * (unit.meter ** 2),
+        ViscFriction=1e-0 * unit.newton * unit.meter * unit.second
     )
-
 
     # NACA 0012 airfoil
     ancillarySail = SimpleNamespace(
@@ -50,57 +71,143 @@ class Sail:
         self.mainSail.frontArea = self.mainSail.thicc * self.mainSail.height
         self.ancillarySail.frontArea = self.ancillarySail.thicc * self.ancillarySail.height
 
-    def setTrailingEdgeAngle(self, newAngle: Rotation2d):
+    @property
+    def trailingEdgeAngle(self):
+        return self.ancillarySail.relativeHeading
+
+    @trailingEdgeAngle.setter
+    def trailingEdgeAngle(self, newAngle: Rotation2d):
         assert self.ancillarySail.minAngle < newAngle.degrees < self.ancillarySail.maxAngle
         self.ancillarySail.relativeHeading = newAngle
 
-    def update(self, dt, windAngle: Rotation2d, windStrength, boatHeading: Rotation2d) -> Vector2d:
+    def _calcSailPercentExposed(self, boatRelativeWindAngle: Rotation2d, sailAngle: Rotation2d) -> float:
+        return boatRelativeWindAngle.rotation.dot(sailAngle.rotation)
+
+    def _calcLift(self, *, airDensity=1.225 * unit.kg / (unit.m ** 3), airVelocity, wingArea, cl):
+        return (1 / 2) * airDensity * airVelocity ** 2 * wingArea * cl
+
+    def update(self, dt, boatRelativeWindAngle: Rotation2d, boatRelativeWindSpeed) -> Vector2d:
         """
         :param dt: Update delta time, in seconds
-        :param windAngle: Wind angle relative to boat ( [0 1] is a headwind)
-        :param windStrength: Wind strength, in m/s
+        :param boatRelativeWindAngle: Wind angle relative to boat ([-1 0] is a headwind)
+        :param boatRelativeWindSpeed: Wind strength, in m/s
         :return: Boat oriented impulse vector direction + magnitude, in newtons
         """
 
-        # Calculate effective area of the side (pushy bit) of the sail that the wind's hitting
-        mainSailSidePresentedArea = self.mainSail.sideArea * \
-                                    _calcSailPercentExposed(windAngle,
-                                                            self.mainSail
-                                                            .relativeHeading
-                                                            .rotateBy(boatHeading)
-                                                            .normal)
-        ancillarySailSidePresentedArea = self.ancillarySail.sideArea * \
-                                         _calcSailPercentExposed(windAngle,
-                                                                 self.ancillarySail
-                                                                 .relativeHeading
-                                                                 .rotateBy(self.mainSail.relativeHeading)
-                                                                 .rotateBy(boatHeading)
-                                                                 .normal)
-        # Calculate effective area of the front (useless bit) of the sail that the wind's hitting
-        mainSailFrontPresentedArea = self.mainSail.frontArea * \
-                                     (1 - _calcSailPercentExposed(windAngle,
-                                                                  self.mainSail
-                                                                  .relativeHeading
-                                                                  .rotateBy(boatHeading)
-                                                                  .normal)
-                                      )
-        ancillarySailFrontPresentedArea = self.ancillarySail.frontArea * \
-                                          (1 - _calcSailPercentExposed(windAngle,
-                                                                       self.ancillarySail
-                                                                       .relativeHeading
-                                                                       .rotateBy(self.mainSail.relativeHeading)
-                                                                       .rotateBy(boatHeading)
-                                                                       .normal)
-                                           )
+        # Calculate angle of attack of sails to get the coefficient of lift and drag
+        mainSailAoA = abs(self.mainSail.relativeHeading
+                          # .rotateBy(boatHeading)
+                          .degrees - boatRelativeWindAngle.degrees) * unit.degree
+        ancillarySailAoA = abs(self.ancillarySail.relativeHeading
+                               .rotateBy(self.mainSail.relativeHeading)
+                               # .rotateBy(boatHeading)
+                               .degrees - boatRelativeWindAngle.degrees) * unit.degree
+        mainCl, mainCd = getCl(mainSailAoA), getCd(mainSailAoA)
+        ancillaryCl, ancillaryCd = getCl(ancillarySailAoA), getCd(ancillarySailAoA)
 
-        mainSailSideForce = airDrag(C=self.mainSail.sideCoD, u=windStrength, A=mainSailSidePresentedArea)
-        ancillarySailSideForce = airDrag(C=self.ancillarySail.sideCoD, u=windStrength, A=ancillarySailSidePresentedArea)
-        mainSailFrontForce = airDrag(C=self.mainSail.sideCoD, u=windStrength, A=mainSailFrontPresentedArea)
-        ancillarySailFrontForce = airDrag(C=self.ancillarySail.sideCoD, u=windStrength, A=ancillarySailFrontPresentedArea)
+        # Calculate effective area of the side (pushy bit) of the sail that the wind's hitting. Not necessary now, might be later (for drag).
+        # mainSailSidePresentedArea = self.mainSail.sideArea * \
+        #                            self._calcSailPercentExposed(boatRelativeWindAngle,
+        #                                                         self.mainSail
+        #                                                         .relativeHeading
+        #                                                         # .rotateBy(boatHeading)
+        #                                                         .normal)
+        # ancillarySailSidePresentedArea = self.ancillarySail.sideArea * \
+        #                                 self._calcSailPercentExposed(boatRelativeWindAngle,
+        #                                                              self.ancillarySail
+        #                                                              .relativeHeading
+        #                                                              .rotateBy(self.mainSail.relativeHeading)
+        #                                                              # .rotateBy(boatHeading)
+        #                                                              .normal)
+
+        mainSailLift = self._calcLift(airVelocity=boatRelativeWindSpeed,
+                                      wingArea=self.mainSail.sideArea,
+                                      cl=mainCl)
+        ancillarySailLift = self._calcLift(airVelocity=boatRelativeWindSpeed,
+                                           wingArea=self.ancillarySail.sideArea,
+                                           cl=ancillaryCl)
+
+        # print(mainSailLift.to(unit.newton))
+        # print(ancillarySailLift.to(unit.newton))
+
+        # AoA is side invarient, now we need to figure out which way our force is actually applied
+        mainSailForce = mainSailLift.to(unit.newton)
+        forceOnBoatDirection = None
+        if mainSailAoA == 0:
+            forceOnBoatDirection = self.mainSail.relativeHeading
+            mainSailForce = 0 * unit.newton
+        elif self.mainSail.relativeHeading.degrees - boatRelativeWindAngle.degrees > 0:
+            forceOnBoatDirection = self.mainSail.relativeHeading.normal
+        else:
+            forceOnBoatDirection = self.mainSail.relativeHeading.normal.rotateBy(Rotation2d.fromDegrees(180.0))
+
+        # Same deal, but just a torque multiplier this time, since the sail assembly can only pivot and not translate xy
+        ancillarySailForce = ancillarySailLift.to(unit.newton)
+        torqueSign = None
+        if ancillarySailAoA == 0:
+            torqueSign = 0
+        elif self.ancillarySail.relativeHeading \
+                .rotateBy(self.mainSail.relativeHeading).degrees - boatRelativeWindAngle.degrees > 0:
+            torqueSign = -1
+        else:
+            torqueSign = 1
+
+        # Now we have to calculate the torque that the ancillary sail puts out on the sail assembly
+        torque = (self.ancillarySail.pivotOffset * ancillarySailForce * torqueSign).to(unit.newton * unit.meter)
+        angularAcceleration = (torque - self.mainSail.angularVelocity * self.mainSail.ViscFriction) / self.mainSail.MOI
+        # t' = -tb/J
+        self.mainSail.angularVelocity += angularAcceleration * dt
+
+        self.mainSail.relativeHeading = self.mainSail.relativeHeading \
+            .rotateBy(
+            Rotation2d.fromDegrees(
+                (self.mainSail.angularVelocity * dt).to(unit.degrees).m
+            )
+        )
+
+        ## Calculate effective area of the front (useless bit) of the sail that the wind's hitting
+        # mainSailFrontPresentedArea = self.mainSail.frontArea * \
+        #                             (1 - self._calcSailPercentExposed(boatRelativeWindAngle,
+        #                                                               self.mainSail
+        #                                                               .relativeHeading
+        #                                                               .rotateBy(boatHeading)
+        #                                                               .normal)
+        #                              )
+        # ancillarySailFrontPresentedArea = self.ancillarySail.frontArea * \
+        #                                  (1 - self._calcSailPercentExposed(boatRelativeWindAngle,
+        #                                                                    self.ancillarySail
+        #                                                                    .relativeHeading
+        #                                                                    .rotateBy(self.mainSail.relativeHeading)
+        #                                                                    .rotateBy(boatHeading)
+        #                                                                    .normal)
+        #                                   )
+
+        # mainSailSideForce = airDrag(C=self.mainSail.sideCoD, u=boatRelativeWindSpeed, A=mainSailSidePresentedArea)
+        # ancillarySailSideForce = airDrag(C=self.ancillarySail.sideCoD, u=boatRelativeWindSpeed, A=ancillarySailSidePresentedArea)
+        # mainSailFrontForce = airDrag(C=self.mainSail.sideCoD, u=boatRelativeWindSpeed, A=mainSailFrontPresentedArea)
+        # ancillarySailFrontForce = airDrag(C=self.ancillarySail.sideCoD, u=boatRelativeWindSpeed,
+        #                                  A=ancillarySailFrontPresentedArea)
 
 
+if __name__ == '__main__':
+    sail = Sail()
+    sail.mainSail.relativeHeading = Rotation2d.fromDegrees(0)
+    sail.ancillarySail.relativeHeading = Rotation2d.fromDegrees(30)
+    X, Y = [], []
+    dt = 0.01
 
+    for i in range(1000):
+        try:
+            sail.update(dt * unit.second,
+                        boatRelativeWindAngle=Rotation2d(1.0, 0.0),
+                        boatRelativeWindSpeed=5 * unit.meter / unit.second,
+                        )
+            X.append(i * dt)
+            Y.append(sail.mainSail.relativeHeading.degrees)
+        except:
+            break
 
+    import matplotlib.pyplot as plt
 
-def _calcSailPercentExposed(windAngle: Rotation2d, sailAngle: Rotation2d) -> float:
-    return windAngle.rotation.dot(sailAngle.rotation)
+    plt.plot(X, Y)
+    plt.show()
