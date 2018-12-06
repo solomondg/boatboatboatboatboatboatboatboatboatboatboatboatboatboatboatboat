@@ -1,6 +1,6 @@
 import math
 from types import SimpleNamespace
-from typing import Tuple
+from typing import Tuple, List
 
 import numpy as np
 import scipy as sp
@@ -13,7 +13,7 @@ from collections import namedtuple
 
 from aoa_lookup import getCl, getCd
 from units import unit
-from mathutils import Rotation2d, Vector2d, airDrag
+from mathutils import Rotation2d, Vector2d, airDrag, calcLift_Air
 
 
 # CCW coordinate system
@@ -37,7 +37,7 @@ from mathutils import Rotation2d, Vector2d, airDrag
 #
 
 
-# TODO: Make actual lift calculations instead of doing 100% angle of attack
+# TODO: Calc drag, make it act opposite to air flow direction
 class Sail:
     # NACA 0012 airfoil
     mainSail = SimpleNamespace(
@@ -81,10 +81,12 @@ class Sail:
         self.ancillarySail.relativeHeading = newAngle
 
     def _calcSailPercentExposed(self, boatRelativeWindAngle: Rotation2d, sailAngle: Rotation2d) -> float:
+        """
+        :param boatRelativeWindAngle: Angle of wind relative to boat
+        :param sailAngle: Angle of sail relative to boat
+        :return: Percent of sail that's exposed to wind (as the angle of attack becomes smaller, less is exposed)
+        """
         return boatRelativeWindAngle.rotation.dot(sailAngle.rotation)
-
-    def _calcLift(self, *, airDensity=1.225 * unit.kg / (unit.m ** 3), airVelocity, wingArea, cl):
-        return (1 / 2) * airDensity * airVelocity ** 2 * wingArea * cl
 
     def update(self, dt, boatRelativeWindAngle: Rotation2d, boatRelativeWindSpeed) -> Vector2d:
         """
@@ -120,12 +122,12 @@ class Sail:
         #                                                              # .rotateBy(boatHeading)
         #                                                              .normal)
 
-        mainSailLift = self._calcLift(airVelocity=boatRelativeWindSpeed,
-                                      wingArea=self.mainSail.sideArea,
-                                      cl=mainCl)
-        ancillarySailLift = self._calcLift(airVelocity=boatRelativeWindSpeed,
-                                           wingArea=self.ancillarySail.sideArea,
-                                           cl=ancillaryCl)
+        mainSailLift = calcLift_Air(airVelocity=boatRelativeWindSpeed,
+                                    wingArea=self.mainSail.sideArea,
+                                    cl=mainCl)
+        ancillarySailLift = calcLift_Air(airVelocity=boatRelativeWindSpeed,
+                                         wingArea=self.ancillarySail.sideArea,
+                                         cl=ancillaryCl)
 
         # print(mainSailLift.to(unit.newton))
         # print(ancillarySailLift.to(unit.newton))
@@ -165,28 +167,10 @@ class Sail:
             )
         )
 
-        ## Calculate effective area of the front (useless bit) of the sail that the wind's hitting
-        # mainSailFrontPresentedArea = self.mainSail.frontArea * \
-        #                             (1 - self._calcSailPercentExposed(boatRelativeWindAngle,
-        #                                                               self.mainSail
-        #                                                               .relativeHeading
-        #                                                               .rotateBy(boatHeading)
-        #                                                               .normal)
-        #                              )
-        # ancillarySailFrontPresentedArea = self.ancillarySail.frontArea * \
-        #                                  (1 - self._calcSailPercentExposed(boatRelativeWindAngle,
-        #                                                                    self.ancillarySail
-        #                                                                    .relativeHeading
-        #                                                                    .rotateBy(self.mainSail.relativeHeading)
-        #                                                                    .rotateBy(boatHeading)
-        #                                                                    .normal)
-        #                                   )
-
-        # mainSailSideForce = airDrag(C=self.mainSail.sideCoD, u=boatRelativeWindSpeed, A=mainSailSidePresentedArea)
-        # ancillarySailSideForce = airDrag(C=self.ancillarySail.sideCoD, u=boatRelativeWindSpeed, A=ancillarySailSidePresentedArea)
-        # mainSailFrontForce = airDrag(C=self.mainSail.sideCoD, u=boatRelativeWindSpeed, A=mainSailFrontPresentedArea)
-        # ancillarySailFrontForce = airDrag(C=self.ancillarySail.sideCoD, u=boatRelativeWindSpeed,
-        #                                  A=ancillarySailFrontPresentedArea)
+        ret = Vector2d(0.0, 0.0)
+        ret.x = forceOnBoatDirection.cos * mainSailForce
+        ret.y = forceOnBoatDirection.sin * mainSailForce
+        return ret
 
 
 if __name__ == '__main__':

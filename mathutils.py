@@ -210,11 +210,26 @@ def drag(C, u, A, Rho):
     # A is presented area (m^2)
     return 1 / 2 * Rho * (u ** 2) * C * A
 
+
 def airDrag(C, u, A):
     return drag(C, u, A, 1.225 * unit.kg / (unit.meter ** 3))
 
+
 def waterDrag(C, u, A):
     return drag(C, u, A, 997 * unit.kg / (unit.meter ** 3))
+
+
+def calcLift(*, density, velocity, area, cl):
+    return (1 / 2) * density * velocity ** 2 * area * cl
+
+
+def calcLift_Water(*, waterDensity=997 * unit.kg / (unit.m ** 3), waterVelocity, foilArea, cl):
+    return calcLift(density=waterDensity, velocity=waterVelocity, area=foilArea, cl=cl)
+
+
+def calcLift_Air(*, airDensity=1.225 * unit.kg / (unit.m ** 3), airVelocity, wingArea, cl):
+    return calcLift(density=airDensity, velocity=airVelocity, area=wingArea, cl=cl)
+
 
 if __name__ == '__main__':
     print(
